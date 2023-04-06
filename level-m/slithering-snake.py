@@ -36,6 +36,13 @@ def right_key():
     snakeDy = 0 
 stage.event_key("right", right_key)
 
+#Phase 5 - function that checks if the snake collides with the wall 
+def check_state(head):
+    global game_over 
+    # check for snake hitting the walls 
+    if head[0] > 25 or head[0] < -25 or head[1] > 25 or head[1] < -25:
+        game_over = True     
+
 # Phase 4 - Function that checks to see if snake collides with the apple
 def check_apple(head):
     global appleCor, apple, growth
@@ -94,16 +101,19 @@ def main():
         #Phase 4-check to see if snake has eaten the apple
         check_apple(head)
 
+        #Phase 5-check to see if snake has collided with the wall 
+        check_state(head)
+
         #check to see if snake is growing, if so let it grow
         if growth > 0:
             growth -= 1
-
         #remove tail end of the snake from both lists and form the game screen
         else: 
             snake.pop(0)
             stage.remove_sprite(segs[0])
             segs.pop(0)
         stage.wait(0.1)
-        
+    # Phase 5 - display text saying the game is over 
+    text = codesters.Text("Game Over", 0, 0, "red")
 # Call function
 main()
