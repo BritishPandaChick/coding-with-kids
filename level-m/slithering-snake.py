@@ -1,9 +1,15 @@
+import random 
+
 # Phase 1 - Global Variables 
 snake = [] # list of snake positions
 snakeDx = 0 # Tells snake what direction to move in
 snakeDy = -1
 game_over = False # Determine if the game is over
 background = stage.set_background_color("green") # background for project
+#Phase 4 Global variables 
+growth = 3
+appleCor = [random.randint(-24, 24), random.randint(-24, 24)]
+apple = codesters.Circle(appleCor[0] * 10, appleCor[1] * 10, 10, "red")
 
 # Phase 2 - Player Controls
 def up_key():
@@ -30,10 +36,27 @@ def right_key():
     snakeDy = 0 
 stage.event_key("right", right_key)
 
+# Phase 4 - Function that checks to see if snake collides with the apple
+def check_apple(head):
+    global appleCor, apple, growth
+    if head[0] == appleCor[0] and head[1] == appleCor[1]:
+        #make new randomized coordinates for the apple
+        appleCor[0] = random.randint(-24, 24)
+        appleCor[1] = random.randint(-24, 24)
+
+        #remove the previous apple 
+        stage.remove_sprite(apple)
+
+        #add new apple 
+        apple = codesters.Circle(appleCor[0] * 10, appleCor[1] * 10, 10, "red")
+        
+        #increase the growth of the snake 
+        growth += 3
+
 # Phase 3 - Main Game Function
 def main():
     #global variables 
-    global game_over, snake
+    global game_over, snake, growth
     
     #set up game variables
     size = 10
@@ -67,11 +90,19 @@ def main():
         
         #add new head to the list of snake sprites 
         segs.append(circle)
-        
+
+        #Phase 4-check to see if snake has eaten the apple
+        check_apple(head)
+
+        #check to see if snake is growing, if so let it grow
+        if growth > 0:
+            growth -= 1
+
         #remove tail end of the snake from both lists and form the game screen
-        snake.pop(0)
-        stage.remove_sprite(segs[0])
-        segs.pop(0)
+        else: 
+            snake.pop(0)
+            stage.remove_sprite(segs[0])
+            segs.pop(0)
         stage.wait(0.1)
         
 # Call function
