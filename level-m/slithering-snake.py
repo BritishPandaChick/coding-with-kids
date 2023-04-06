@@ -41,7 +41,13 @@ def check_state(head):
     global game_over 
     # check for snake hitting the walls 
     if head[0] > 25 or head[0] < -25 or head[1] > 25 or head[1] < -25:
-        game_over = True     
+        game_over = True 
+        
+    #Phase 6 - check for snake biting itself 
+    for seg in snake:
+        if seg is not head and head[0] == seg[0] and head[1] == seg[1]:
+            game_over = True 
+            break    
 
 # Phase 4 - Function that checks to see if snake collides with the apple
 def check_apple(head):
@@ -115,5 +121,6 @@ def main():
         stage.wait(0.1)
     # Phase 5 - display text saying the game is over 
     text = codesters.Text("Game Over", 0, 0, "red")
+
 # Call function
 main()
