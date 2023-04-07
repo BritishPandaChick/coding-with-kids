@@ -42,8 +42,8 @@ def check_state(head):
     # check for snake hitting the walls 
     if head[0] > 25 or head[0] < -25 or head[1] > 25 or head[1] < -25:
         game_over = True 
-        
-    #Phase 6 - check for snake biting itself 
+
+    # Phase 6 - check for snake biting itself 
     for seg in snake:
         if seg is not head and head[0] == seg[0] and head[1] == seg[1]:
             game_over = True 
