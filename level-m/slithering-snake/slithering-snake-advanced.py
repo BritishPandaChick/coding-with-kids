@@ -104,7 +104,7 @@ def check_shrink():
         if len(snake) > 0:
             snake.pop(0)
             stage.remove_sprite(segs[0])
-            segs.pop()
+            segs.pop(0)
             growth += 1
         else:
             game_over = True 
