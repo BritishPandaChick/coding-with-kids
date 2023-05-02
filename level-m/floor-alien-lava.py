@@ -24,3 +24,21 @@ def build_platforms():
         platforms.append(plat)
         plat_y += 175
 build_platforms()
+
+# Phase 3 - Scrolling the Platform Sprites
+def platform_scrolling(platform, hit_sprite):
+    global min_speed, max_speed, level 
+    if hit_sprite == lava:
+        if alien.alive:
+            level += 1
+            text.set_text("level: " + str(level))
+        min_speed += 1 
+        max_speed += 1
+        platform.set_x_speed(random.randint(min_speed, max_speed) + random.choice([-1, 1]))
+        platform.set_y(500)
+        for plat in platforms:
+            plat.set_y_speed(plat.get_y_speed() - 0.1) # speed up the game 
+        alien.set_y_speed(platforms[0].get_y_speed())
+
+for plat in platforms:
+    plat.event_collision(platform_scrolling)
