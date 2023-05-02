@@ -14,3 +14,13 @@ text = codesters.Text("level: 0", -200, 200)
 lava = codesters.Rectangle(0, -250, 500, 20, "red")
 
 # Phase 2 - Making platform sprites 
+def build_platforms():
+    plat_y = -220
+    for i in range(0,4):
+        plat = codesters.Rectangle(0, plat_y, 100, 20, "blue")
+        plat.set_x_speed(random.randint(min_speed, max_speed) * random.choice([-1, 1]))
+        plat.set_gravity_off()
+        plat.set_y_speed(-0.3)
+        platforms.append(plat)
+        plat_y += 175
+build_platforms()
