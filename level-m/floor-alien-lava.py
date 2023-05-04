@@ -42,3 +42,24 @@ def platform_scrolling(platform, hit_sprite):
 
 for plat in platforms:
     plat.event_collision(platform_scrolling)
+
+# Phase 4 - Alien jumping and collision
+def space_bar():
+    if alien.onPlatform:
+        alien.set_y_speed(14)
+        alien.onPlatform = False 
+        alien.set_gravity_on()
+        alien.set_x_speed(0)
+stage.event_key("space", space_bar) 
+
+def alien_collision(sprite, hit_sprite):
+    if hit_sprite == lava:
+        alien.alive = False 
+        stage.remove_sprite(alien)
+    elif sprite.get_y_speed() <= 0:
+        sprite.set_y_speed(0)
+        sprite.set_gravity_off()
+        sprite.set_y_speed(hit_sprite.get_y_speed())
+        sprite.set_x_speed(hit_sprite.get_x_speed())
+        sprite.onPlatform = True 
+alien.event_collision(alien_collision)
