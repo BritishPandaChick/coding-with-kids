@@ -30,7 +30,7 @@ def fire_hit(sprite, hit_sprite):
 
 # creates and shoots iceballs 
 def shoot_ice():
-    iceball = codesters.Circle(player.get_x() - 40, player.get_y() + 70, 30, "lightblue")
+    iceball = codesters.Circle(player.get_x() - 40, player.get_y() + 70, 30, "lightBlue")
     iceball.event_collision(ice_hit)
     iceball.set_opacity(0.85)
     iceball.set_rotation(random.randint(150, 210))
