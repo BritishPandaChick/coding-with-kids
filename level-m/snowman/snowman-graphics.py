@@ -1,5 +1,8 @@
 asker = codester.Sprite("robot", 100, -200)
 guessed_display = codesters.Text("Letters Guessed:", -160, -100, "black")
+t = turtle.Turtle()
+t.penup()
+t.hide()
 display = []
 word = ''
 display_word = []
@@ -16,20 +19,46 @@ def init():
     display = []
     for i in range(len(display_word)):
         display.append(codesters.Text(display_word[i], -230+i*25, 50, "red"))
-        guessed_display.set_text("Letters Guessed:")
-
-def word_guessed():
-    return "_" not in display_word
+    guessed_display.set_text("Letters Guessed:")
 
 def update_display():
     for i in range(len(display_word)):
         display[i].set_text(display_word[i])
     guessed_display.set_text("Letters Guessed:\n{}".format(guessed))
     
+def word_guessed():
+    return "_" not in display_word
+
+def update_snowman():
+    if guesses == 5:
+        t.goto(100, 160)
+        t.pendown()
+        t.circle(20)
+    elif guesses == 4:
+        t.goto(100, 100)
+        t.pendown()
+        t.circle(30)
+    elif guesses == 3:
+        t.goto(100, 20)
+        t.pendown()
+        t.circle(40)
+    elif guesses == 1:
+        t.goto(70, 140)
+        t.pendown()
+        t.goto(30, 160)
+    elif guesses == 0:
+        t.goto(80, 200)
+        t.pendown()
+        t.goto(120, 200)
+        t.goto(90, 200)
+        for i in range(4):
+            t.forward(20)
+            t.left(90)
+    t.penup()
+
 def main():
     global guesses, guessed
     init()
-    print(" ".join(l for l in display_word))
     while not word_guessed() and guesses > 0:
         letter = asker.ask("Guess a letter: ")
         if len(letter) != 1:
