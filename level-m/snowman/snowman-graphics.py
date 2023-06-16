@@ -18,6 +18,9 @@ def init():
         display.append(codesters.Text(display_word[i], -230+i*25, 50, "red"))
         guessed_display.set_text("Letters Guessed:")
 
+def word_guessed():
+    return "_" not in display_word
+
 def update_display():
     for i in range(len(display_word)):
         display[i].set_text(display_word[i])
@@ -32,9 +35,11 @@ def main():
         if len(letter) != 1:
             asker.say('Please enter one letter at a time')
             stage.wait(1)
+            continue
         elif letter in guessed:
             asker.say('You already tried "'+letter+'" guess again')
             stage.wait(1)
+            continue
         guessed += letter
         if letter not in word:
             guesses -= 1
@@ -44,8 +49,8 @@ def main():
                     display_word[i] = letter
         update_display()
     if guesses > 0:
-        print("You guessed it!")
+        asker.say("You guessed it!")
     else:
-        print("Better luck next time")
+        asker.say("Better luck next time")
 
 main()
