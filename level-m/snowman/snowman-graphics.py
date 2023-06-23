@@ -42,6 +42,10 @@ def update_snowman():
         t.goto(100, 20)
         t.pendown()
         t.circle(40)
+    elif guesses == 2:
+        t.goto(130, 140)
+        t.pendown()
+        t.goto(160, 160)    
     elif guesses == 1:
         t.goto(70, 140)
         t.pendown()
