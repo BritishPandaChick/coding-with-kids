@@ -31,3 +31,20 @@ def divide(vector, number):
     normX = vector[0] / number #normalize x component 
     normY = vector[1] / number #normalize y component 
     return [normX, normY]
+
+#player throws a snowball towards a clicked point on the stage using vectors and velocity
+def throw():
+    #actual vector to the clicked point.
+    vector = calculate_vector(stage.click_x(), stage.click_y())
+    # get the magnitude of the vector so we can normalize the vector 
+    mag = magnitude(vector)
+    # normalize the vector (remove any current magnitude)
+    norm = divide(vector, mag)
+    shot = codesters.Circle(player.get_x(), player.get_y(), 7, "white")
+    # after we normalize the vector, we multiply by 5 so that the speed is constant and moving in the correct direction.
+    x_speed = norm[0] * 5
+    y_speed = norm[1] * 5
+    shot.set_x_speed(x_speed)
+    shot.set_y_speed(y_speed)
+# when the player clicks, the player throws a snowball at the clicked coordinates 
+stage.event_click(throw)
