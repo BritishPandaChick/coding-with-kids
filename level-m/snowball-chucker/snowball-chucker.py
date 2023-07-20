@@ -48,3 +48,17 @@ def throw():
     shot.set_y_speed(y_speed)
 # when the player clicks, the player throws a snowball at the clicked coordinates 
 stage.event_click(throw)
+
+#create a new enemy shot with random x and y speed (causing the snowballs direction to be randomized)
+def enemy_throw():
+    c_shot = codesters.Circle(computer.get_x(), computer.get_y(), 7, "black")
+    c_shot.set_x_speed(-1 * random.randint(1, 5))
+    c_shot.set_y_speed(-1 * random.randint(1, 3))
+
+#main game function, runs the game
+def main():
+    while game_over is False:
+        enemy_throw()
+        stage.wait(2)
+if __name__ == "__main__":
+    main()
