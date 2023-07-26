@@ -55,6 +55,26 @@ def enemy_throw():
     c_shot.set_x_speed(-1 * random.randint(1, 5))
     c_shot.set_y_speed(-1 * random.randint(1, 3))
 
+#collision for both the player and the computer 
+def collision(sprite, hit_sprite):
+    global player_hp, computer_hp, game_over
+    one = sprite.get_image_name()
+    my_var = hit_sprite.get_color()
+    if one is "robot" and my_var is "black":
+        stage.remove_sprite(hit_sprite)
+        sprite.say("Ouch!")
+        player.lives -= 1
+        if player.lives < 1:
+            game_over = True
+    elif one is "enemy" and my_var is "white":
+        stage.remove_sprite(hit_sprite)
+        sprite.say("Ouch!")
+        computer.lives -= 1
+        if computer.lives < 1:
+            game_over = True 
+player.event_collision(collision)
+computer.event_collision(collision)
+
 #main game function, runs the game
 def main():
     while game_over is False:
