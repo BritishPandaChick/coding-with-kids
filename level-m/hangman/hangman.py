@@ -21,4 +21,14 @@ def word_guessed():
         if not (letter in letters_guessed):
           return False
     return True
-    
+
+def print_guessed():
+    global secret_word, letters_guessed
+    guessed_word = []
+
+    for letter in secret_word:
+        if letter in letters_guessed:
+            guessed_word.append(letter)
+        else:
+            guessed_word.append("-")
+    print("".join(guessed_word))
