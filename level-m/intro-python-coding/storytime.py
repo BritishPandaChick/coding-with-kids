@@ -1,6 +1,5 @@
 stage.set_background("park")
 boy = codesters.Sprite("person12")
-boy.go_to(-285, -70)
 stage.wait(2)
 
 boy.move_right(30)
@@ -8,6 +7,7 @@ boy.move_right(30)
 boy.move_right(30)
 boy.move_right(30)
 boy.move_right(30)
+
 boy.say("I'm so bored", 2)
 boy.say("Maybe the park will be interesting.", 2)
 stage.wait(1)
@@ -24,5 +24,6 @@ alien.move_down(50)
 alien.move_down(50)
 alien.move_down(50)
 alien.move_down(50)
-alien.say("Hey there! I'm new in town!", 3)
+
+alien.say("Hey, there! I'm new in town!", 3)
 boy.say("Wow!")
