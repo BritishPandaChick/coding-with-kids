@@ -15,3 +15,22 @@ moving = False
 game_over = False
 shot_count = 0
 color = ""
+
+# create initial bubbles
+def create_bubbles():
+    for row in range(rows):
+        for col in range(columns):
+            bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
+            bubbles.append(bubble)
+    
+#resets the ball to its starting point and to a new color 
+def reset_ball():
+    ball.go_to(0, -210)
+    ball.set_color(random.choice(colors))
+
+def main():
+    reset_ball()
+    create_bubbles()
+    
+if __name__ == '__main__':
+    main()
