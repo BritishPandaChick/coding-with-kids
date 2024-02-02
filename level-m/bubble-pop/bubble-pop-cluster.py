@@ -5,30 +5,92 @@ arrow = codesters.Sprite(arrow_url, 0, -210)
 arrow.set_size(.2)
 arrow.set_rotation(90)
 ball = codesters.Circle(0, -210, 20)
+text = codesters.Text(" ", 0, 0, "red")
 
 #global variables 
 bubbles = []
 colors = ["blue", "yellow", "#00ff55", "#0099ff"]
 rows = 3
 columns = 19
+bubble_count = rows * columns
 moving = False
 game_over = False
 shot_count = 0
 color = ""
 
-# create initial bubbles
-def create_bubbles():
-    for row in range(rows):
-        for col in range(columns):
-            bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
-            bubbles.append(bubble)
-    
 #resets the ball to its starting point and to a new color 
 def reset_ball():
     ball.go_to(0, -210)
     ball.set_color(random.choice(colors))
 
-# Player controls 
+# create initial bubbles
+def create_bubbles():
+    for row in range(rows):
+        for col in range(columns):
+            bubble = ""
+            if row%2 == 1:
+                bubble.codesters.Circle(col*25-230, 205-row*20, 20, random.choice(colors))
+            else:
+                bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
+            bubble.row = row + 1
+            bubble.col = col + 1
+            bubble.in_play = True
+            bubbles.append(bubble)
+
+#move bubbles down the screen 
+def move_bubbles():
+    global game_over
+    back_board.set_y(back_board.get_y()-15)
+    for bubble in bubbles:
+        bubble.set_y(bubble.get_y()-15)
+        
+    if bubbles[len(bubbles)-1].get_y() < -170:
+        text.set_text("Game Over")
+        game_over = True
+
+# check if neighboring bubble is in play and the same color 
+def check_neighbor(bubble, idx):
+    if bubbles[idx].in_play:
+        if bubble.get_color() == bubbles[idx].get_color():
+            return True 
+    return False
+
+# recursively deletes clusters of the same colored balls 
+def del_group(bubble, idx):
+    global bubble_count
+    bubble.in_play = False 
+    # check ball to the left 
+    if bubble.col > 1 and check_neighbor(bubble, idx-1):
+        del_group(bubbles[idx-1], (idx-1))
+    # check ball to the right 
+    if bubble.col < columns and check_neighbor(bubble, idx+1):
+        del_group(bubbles[idx+1], (idx+1))
+    # check ball below 
+    if bubble.row > 1 and check_neighbor(bubble, idx-columns):
+        del_group(bubbles[idx-columns], (idx-columns))
+    # check ball above
+    if bubble.row < rows and check_neighbor(bubble, idx+columns):
+        del_group(bubbles[idx+columns], (idx+columns))
+    # check diagonals in odd rows 
+    if bubble.row%2 == 1:
+        # check right diagonal above 
+        if bubble.row < rows and bubble.col < columns and check_neighbor(bubble, idx+columns+1):
+            del_group(bubbles[idx+columns+1], (idx+columns+1))
+        # checck right diagonal below 
+        if bubble.row > 1 and bubble.col < columns and check_neighbor(bubble, idx-(columns-1)):
+            del_group(bubbles[idx-(columns-1)], (idx-(columns-1)))
+    #check diagonals in even rows 
+    else: 
+        #check left diagonal above
+        if bubble.row < rows and bubble.col > 1 and check_neighbor(bubble, idx+columns-1):
+            del_group(bubbles[idx+columns-1], (idx+columns-1))
+        #check left diagonal below 
+        if bubble.col > 1 and check_neighbor(bubble, idx-(columns+1)):
+            del_group(bubbles[idx-(columns+1)], (idx-(columns+1)))
+    bubble_count -= 1
+    stage.remove_sprite(bubble)
+
+# Controls 
 def left_key():
     if not game_over:
         arrow.set_rotation(arrow.get_rotation()+5)
@@ -58,59 +120,6 @@ def up_key():
         reset_ball()
 stage.event_key("up", up_key)
 
-#move bubbles down the screen 
-def move_bubbles():
-    global game_over
-    back_board.set_y(back_board.get_y()-15)
-    for bubble in bubbles:
-        bubble.set_y(bubble.get_y()-15)
-        
-    if bubbles[len(bubbles)-1].get_y() < -170:
-        text.set_text("Game Over")
-        game_over = True
-
-# check if neighboring bubble is in play and the same color 
-def check_neighbor(bubble, idx):
-    if bubbles[idx].in_play:
-        if bubble.get_color() == bubbles[idx].get_color():
-            return True 
-    return False
-    
-# recursively deletes clusters of the same colored balls 
-def del_group(bubble, idx):
-    global bubble_count
-    bubble.in_play = False 
-    # check ball to the left 
-    if bubble.col > 1 and check_neighbor(bubble, idx-1):
-        del_group(bubbles[idx-1], (idx-1))
-    # check ball to the right 
-    if bubble.col < columns and check_neighbor(bubble, idx+1):
-        del_group(bubbles[idx+1], (idx+1))
-    # check ball below 
-    if bubble.row > 1 and check_neighbor(bubble, idx-columns):
-        del_group(bubbles[idx-columns], (idx-columns))
-    # check ball above
-    if bubble.row < rows and check_neighbor(bubble, idx+columns):
-        del_group(bubbles[idx+columns], (idx+columns))
-    # check diagonals in odd rows 
-    if bubble.row%2 == 1:
-        # check right diagonal above 
-        if bubble.row < rows and bubble.col < columns and check_neighbor(bubble, idx+columns+1):
-            del_group(bubbles[idx+columns+1], (idx+columns+1))
-        # checck right diagonal below 
-        if bubble.row > 1 and bubble.col < columns and check_neighbor(bubble, idx-(columns-1)):
-            del_group(bubbles[idx-(columns-1)], (idx-(columns-1))
-    #check diagonals in even rows 
-    else: 
-        #check left diagonal above
-        if bubble.row < rows and bubble.col > 1 and check_neighbor(bubble, idx+columns-1):
-            del_group(bubbles[idx+columns-1], (idx+columns-1))
-        #check left diagonal below 
-        if bubble.col > 1 and check_neighbor(bubble, idx-(columns+1)):
-            del_group(bubbles[idx-(columns+1)], (idx-(columns+1)))
-    bubble_count -= 1
-    stage.remove_sprite(bubble)
-
 # ball collision
 def ball_collision(sprite, hit_sprite):
     global moving, game_over
@@ -123,6 +132,7 @@ def ball_collision(sprite, hit_sprite):
                 game_over = True
 ball.event_collision(ball_collision)
 
+# Main function 
 def main():
     reset_ball()
     create_bubbles()
