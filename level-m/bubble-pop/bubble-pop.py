@@ -69,6 +69,19 @@ def move_bubbles():
         text.set_text("Game Over")
         game_over = True
 
+# ball collision
+def ball_collision(sprite, hit_sprite):
+    global moving, game_over
+    if hit_sprite != arrow:
+        moving = False 
+        if hit_sprite.get_color() == color:
+            bubbles.remove(hit_sprite)
+            stage.remove_sprite(hit_sprite)
+            if len(bubbles) == 0:
+                game_over = True
+                text.set_text("You Win")
+ball.event_collision(ball_collision)
+
 def main():
     reset_ball()
     create_bubbles()
