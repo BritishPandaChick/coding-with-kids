@@ -5,6 +5,7 @@ arrow = codesters.Sprite(arrow_url, 0, -210)
 arrow.set_size(.2)
 arrow.set_rotation(90)
 ball = codesters.Circle(0, -210, 20)
+text = codesters.Text(" ", 0, 0, "red")
 
 #global variables 
 bubbles = []
@@ -15,20 +16,35 @@ moving = False
 game_over = False
 shot_count = 0
 color = ""
-
-# create initial bubbles
-def create_bubbles():
-    for row in range(rows):
-        for col in range(columns):
-            bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
-            bubbles.append(bubble)
     
 #resets the ball to its starting point and to a new color 
 def reset_ball():
     ball.go_to(0, -210)
     ball.set_color(random.choice(colors))
 
-# Player controls 
+# create initial bubbles
+def create_bubbles():
+    for row in range(rows):
+        for col in range(columns):
+            bubble = ""
+            if row%2 == 1:
+                bubble = codesters.Circle(col*25-230, 205-row*20, 20, random.choice(colors))
+            else:
+                bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
+            bubbles.append(bubble)
+
+#move bubbles down the screen 
+def move_bubbles():
+    global game_over
+    back_board.set_y(back_board.get_y()-15)
+    for bubble in bubbles:
+        bubble.set_y(bubble.get_y()-15)
+        
+    if bubbles[len(bubbles)-1].get_y() < -170:
+        text.set_text("Game Over")
+        game_over = True
+
+# Controls 
 def left_key():
     if not game_over:
         arrow.set_rotation(arrow.get_rotation()+5)
@@ -58,17 +74,6 @@ def up_key():
         reset_ball()
 stage.event_key("up", up_key)
 
-#move bubbles down the screen 
-def move_bubbles():
-    global game_over
-    back_board.set_y(back_board.get_y()-15)
-    for bubble in bubbles:
-        bubble.set_y(bubble.get_y()-15)
-        
-    if bubbles[len(bubbles)-1].get_y() < -170:
-        text.set_text("Game Over")
-        game_over = True
-
 # ball collision
 def ball_collision(sprite, hit_sprite):
     global moving, game_over
@@ -82,6 +87,7 @@ def ball_collision(sprite, hit_sprite):
                 text.set_text("You Win")
 ball.event_collision(ball_collision)
 
+# Main function
 def main():
     reset_ball()
     create_bubbles()
