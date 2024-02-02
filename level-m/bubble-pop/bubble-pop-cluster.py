@@ -29,7 +29,7 @@ def create_bubbles():
         for col in range(columns):
             bubble = ""
             if row%2 == 1:
-                bubble.codesters.Circle(col*25-230, 205-row*20, 20, random.choice(colors))
+                bubble = codesters.Circle(col*25-230, 205-row*20, 20, random.choice(colors))
             else:
                 bubble = codesters.Circle(col*25-230, 205-row*22, 20, random.choice(colors))
             bubble.row = row + 1
