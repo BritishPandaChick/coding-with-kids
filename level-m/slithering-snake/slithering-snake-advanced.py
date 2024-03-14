@@ -6,12 +6,15 @@ snakeDx = 0
 snakeDy = -1
 game_over = False
 background = stage.set_background_color("green")
+
 # Phase 3 Global Variables - set up game variables
 size = 10
 segs = []
+
 #Phase 4 Global variables - apple and apple positions
 growth = 3
 apple_x = random.randint(-24, 24)
+
 apple_y = random.randint(-24, 24)
 # Bonus Global Variables - poison apple and positions
 papple_x = random.randint(-24, 24)
@@ -23,16 +26,19 @@ def up_key():
     snakeDx = 0 
     snakeDy = 1
 stage.event_key("up", up_key)
+
 def down_key():
     global snakeDx, snakeDy
     snakeDx = 0 
     snakeDy = -1 
 stage.event_key("down", down_key)
+
 def left_key():
     global snakeDx, snakeDy 
     snakeDx = -1 
     snakeDy = 0 
 stage.event_key("left", left_key)
+
 def right_key():
     global snakeDx, snakeDy 
     snakeDx = 1

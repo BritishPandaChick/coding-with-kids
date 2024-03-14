@@ -33,4 +33,5 @@ def game():
             sprite.set_x(random.randint(-220, 220))
             sprite.set_y(random.randint(-220, 220))
         stage.wait(2)
+game()
             
