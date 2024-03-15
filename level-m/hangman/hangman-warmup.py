@@ -1,20 +1,20 @@
-# Exercise 1 
+# Exercise 1
 w = input("Enter a word: ")
-s = input("Enter a sentence: ")
+a = input("Enter a sentence: ")
 if w in s:
     print("yes")
 else:
     print("no")
-
+    
 # Exercise 2 
 def even(num):
     if num % 2 == 0:
-        return True 
+        return True
     else:
         return False
     
 # Exercise 3 
-x = 0 
+x = 0
 a = []
 
 while True:
@@ -23,11 +23,11 @@ while True:
         break
     else:
         a.append(int(x))
-
+        
 a.sort()
 print(a)
 
-# Exercise 4 
+# Exercise 4
 a = []
 
 while True:
