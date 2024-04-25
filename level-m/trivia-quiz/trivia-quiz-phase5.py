@@ -39,7 +39,7 @@ def create_questions():
     questions.append("What  is 'pixel' short for?")
     answers.append(["pixel - it's not \nshort for anything", "Edward Pixelli", "pixelized point", "picture element"])
     correct_answers.append(d)
-
+    
 # Phase 3 - ask questions and checking the answer 
 def ask_question():
     question.set_text(questions[question_num])
@@ -47,6 +47,21 @@ def ask_question():
     b.set_text("B: "+answers[question_num][1])
     c.set_text("C: "+answers[question_num][2])
     d.set_text("D: "+answers[question_num][3])
+
+# Phase 4 - moving to next question
+def next_round():
+    global question_num
+    question_num += 1
+    if question_num < len(questions):
+        for c in choices: # add phase 5
+            c.show() # add phase 5
+        display.set_text(" ")
+        ask_question()
+    else: # add phase 5
+        question.hide() # add phase 5
+        for c in choices: #add phase 5
+            c.hide() # add phase 5
+        display.set_text("You got {}/{} questions correct.".format(score, len(questions))) # add phase 5
     
 def answer_click(choice):
     global score
@@ -54,7 +69,16 @@ def answer_click(choice):
         display.set_text("Correct!")
         score += 1
     else:
-        display.set_text("Incorrect")
+        display.set_text("Incorrect, the correct answer was: ") # update phase 5
+    # reveal correct answer - add phase 5
+    stage.wait(1)
+    for c in choices:
+        if c is not correct_answers[question_num]:
+            c.hide()
+    correct_answers[question_num].turn_left(360)
+    stage.wait(4) # add phase 4. Update 2 to 4.
+    #start the next round
+    next_round() # add phase 4
 
 for choice in choices:
     choice.event_click(answer_click)
